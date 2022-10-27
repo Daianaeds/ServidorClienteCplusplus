@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1666834266 source:e:\licenciatura en sistemas\3er aÑo\2do cuatrimestre\redes y comunicaciones 2022\tp redes daiana di stefano 2022\código\clientetp\main.cpp
+1666840285 source:e:\licenciatura en sistemas\3er aÑo\2do cuatrimestre\redes y comunicaciones 2022\tp redes daiana di stefano 2022\código\clientetp\main.cpp
 	<iostream>
 	<winsock2.h>
 

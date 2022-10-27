@@ -28,20 +28,21 @@ public:
         }
     }
 
+    void Enviar(){ //para enviar al cliente, esto lo voy a usar cuando le tengamos que enviar la respuesta al cliente
 
-    void Recibir(){ //para recibir datos del cliente
-
-        recv(client, buffer, sizeof(buffer), 0);
-        cout << "Cliente dice: " << buffer << endl;
-        memset(buffer, 0, sizeof(buffer)); //resetea el arreglo buffer a 0 (qué variable manipulamos, que se pone, que numero del arreglo(tamaño del buffer se le pone 0))
+        cout << "Escribe el mensaje a enviar: ";
+        cin >>this->buffer;
+        send(client,buffer, sizeof(buffer), 0);
+        memset(buffer, 0, sizeof(buffer)); //reseteamos la variable
+        cout << "Mensaje enviado al cliente!!" << endl;
 
     }
 
-    void Enviar(){ //para enviar al cliente, esto lo voy a usar cuando le tengamos que enviar la respuesta al cliente
-        cout << "Escribe el mensaje a enviar: ";
-        cin>>this->buffer;
-        send(server,buffer, sizeof(buffer), 0);
-        memset(buffer, 0, sizeof(buffer)); //reseteamos la variable
+    void Recibir(){
+
+        recv(client, buffer, sizeof(buffer), 0);  //para recibir datos del cliente
+        cout << "Cliente dice: " << buffer << endl;
+        memset(buffer, 0, sizeof(buffer)); //resetea el arreglo buffer a 0 (qué variable manipulamos, que se pone, que numero del arreglo(tamaño del buffer se le pone 0))
 
     }
 

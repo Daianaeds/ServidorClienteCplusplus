@@ -19,22 +19,16 @@ public:
         addr.sin_port = htons(5555);
 
         connect(server, (SOCKADDR *)&addr, sizeof(addr));
-        cout << "Conectador al servidor!!" << endl << endl;
+        cout << "Conectado al servidor!!" << endl << endl;
     }
 
-    void EnviarCalculo(){
+    void Enviar(){
 
-        cout << "Escribe el mensaje a enviar: " << endl;
+        cout << "Escribe el mensaje a enviar: ";
         cin >>this->buffer;
         send(server,buffer, sizeof(buffer), 0);
-        cout << "Mensaje enviado!!" << endl;
+        cout << "Mensaje enviado al servidor!!" << endl;
         memset(buffer, 0, sizeof(buffer)); //reseteamos la variable
-
-    }
-
-    void VerRegistro(){
-
-
 
     }
 
@@ -70,19 +64,18 @@ public:
                 case 1:
                     system("cls");
                     cout <<"\nSe usara funcion enviarCalular al servidor" <<endl;
-                    //Cliente->EnviarCalculo();
+                    //Cliente->Enviar();
                     break;
 
                 case 2:
                     system("cls");
                     cout <<"\nSe usara funcion verActividades al servidor" <<endl;
-                    //
                     break;
 
                 case 3:
                     system("cls");
                     cout <<"\nSe usara funcion cerrarSesion al servidor" <<endl;
-                    //Cliente->CerrarSesion();
+                    //Cliente->CerrarSesion()
                     break;
 
                 default:
@@ -104,7 +97,8 @@ int main()
     Client *Cliente = new Client();
     while(true){
 
-        Cliente->Menu();
+        Cliente->Enviar();
+        Cliente->Recibir();
 
     }
 
