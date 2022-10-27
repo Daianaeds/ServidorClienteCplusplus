@@ -27,9 +27,8 @@ public:
         cout << "Escribe el mensaje a enviar: ";
         cin >>this->buffer;
         send(server,buffer, sizeof(buffer), 0);
-        cout << "Mensaje enviado al servidor!!" << endl;
         memset(buffer, 0, sizeof(buffer)); //reseteamos la variable
-
+        cout << "Mensaje enviado al servidor!!" << endl;
     }
 
     void Recibir(){
