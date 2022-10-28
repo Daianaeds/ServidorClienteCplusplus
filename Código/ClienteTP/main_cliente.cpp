@@ -11,12 +11,13 @@ public:
     char buffer[1024];
 
     Client(){
+        u_short port = 5555;
         WSAStartup(MAKEWORD(2,0), &WSAData);
         server = socket(AF_INET, SOCK_STREAM, 0);
 
         addr.sin_addr.s_addr = inet_addr("192.168.1.33"); // IP al servidor -> cmd -> ipconfig -> IPv4
         addr.sin_family = AF_INET;
-        addr.sin_port = htons(5555);
+        addr.sin_port = htons(port);
 
         connect(server, (SOCKADDR *)&addr, sizeof(addr));
         cout << "Conectado al servidor!!" << endl << endl;

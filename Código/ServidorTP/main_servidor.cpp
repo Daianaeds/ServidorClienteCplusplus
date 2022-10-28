@@ -1,5 +1,7 @@
 #include <iostream>
 #include <winsock2.h>
+#include <fstream>
+#include <ctime>
 
 using namespace std;
 
@@ -8,14 +10,16 @@ public:
     WSADATA WSAData;
     SOCKET server, client;
     SOCKADDR_IN serverAddr, clientAddr;
-    char buffer[1024];
+    char buffer[1024], date[32];
 
     Server(){
+        u_short port = 5555;
         WSAStartup(MAKEWORD(2,0), &WSAData);
         server = socket(AF_INET, SOCK_STREAM, 0);
         serverAddr.sin_addr.s_addr = INADDR_ANY;
         serverAddr.sin_family = AF_INET;
-        serverAddr.sin_port = htons(5555);
+
+        serverAddr.sin_port = htons(port);
 
         bind(server, (SOCKADDR *)&serverAddr, sizeof(serverAddr));
         listen(server, 0);
@@ -25,6 +29,20 @@ public:
         int clientAddrSize = sizeof(clientAddr);
         if((client = accept(server, (SOCKADDR *)&clientAddr, &clientAddrSize)) != INVALID_SOCKET){
             cout << "El cliente se ha conectado!" << endl;
+
+            //se crea el archivo de server.log con los datos de horaActual y el puerto
+            ofstream archivo;
+            archivo.open("server.log.txt", ios::out|ios::app);
+            if(archivo.fail()){
+                cout<<"No se pudo abrir el archivo";
+                exit(1);
+            }
+
+            archivo<<horaActual() << ": =============================\n";
+            archivo<<horaActual() << ": =======Inicia Servidor=======\n";
+            archivo<<horaActual() << ": =============================\n";
+            archivo<<horaActual() << ": Socket creado. Puerto de escucha: " << port << "\n";
+
         }
     }
 
@@ -51,6 +69,13 @@ public:
         closesocket(client);
         cout << "El cliente se ha desconectado. Se ha liberado el socket" << endl;
 
+    }
+
+    char* horaActual(){
+        time_t now = time(0);
+        tm* localtm = localtime(&now);
+        strftime(date,sizeof(date),"%d-%m-%y_%H:%M:%S",localtm);
+        return date;
     }
 };
 
