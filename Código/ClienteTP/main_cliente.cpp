@@ -1,5 +1,6 @@
 #include <iostream>
 #include <winsock2.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -9,27 +10,56 @@ public:
     SOCKET server;
     SOCKADDR_IN addr;
     char buffer[1024];
+    int socket_estado;
+    Client(){}
 
-    Client(){
-        u_short port = 5555;
-        WSAStartup(MAKEWORD(2,0), &WSAData);
+    int _init(int port){
+        socket_estado = WSAStartup(MAKEWORD(2,0), &WSAData);
         server = socket(AF_INET, SOCK_STREAM, 0);
-
         addr.sin_addr.s_addr = inet_addr("192.168.1.33"); // IP al servidor -> cmd -> ipconfig -> IPv4
         addr.sin_family = AF_INET;
         addr.sin_port = htons(port);
+        socket_estado = connect(server, (SOCKADDR *)&addr, sizeof(addr));
+        if(socket_estado == SOCKET_ERROR){
+            cout<<"Conexion fallo - ERROR: "<<WSAGetLastError()<<endl; // valida si fallo la conexion
+            socket_estado = closesocket(server);
+            if (socket_estado == SOCKET_ERROR){ // valida si fallo la funcion de cerrar socket
+                cout<<"Funcion 'closesocket' fallo - ERROR: "<<WSAGetLastError()<<endl;
+            }
+            WSACleanup();
+            system("pause");
+            system("cls");
+            return -1;
+        }else{
+            system("cls");
+            cout << "\n¡¡Conectado al servidor!!" << endl << endl;
+            return 0;
+        }
 
-        connect(server, (SOCKADDR *)&addr, sizeof(addr));
-        cout << "Conectado al servidor!!" << endl << endl;
+
     }
 
     void Enviar(){
 
-        cout << "Escribe el mensaje a enviar: ";
+        cout << "Escribe la operacion a realizar: ";
         cin >>this->buffer;
-        send(server,buffer, sizeof(buffer), 0);
-        memset(buffer, 0, sizeof(buffer)); //reseteamos la variable
-        cout << "Mensaje enviado al servidor!!" << endl;
+        if(buffer[0] == '\0'){// si da valor 0 es por que son iguales, si da 1 es por que son distintos
+            cout << "No se pueden ingresar datos vacios";
+            Menu();
+        }
+        else if(sizeof(buffer) <= 20){
+            send(server,buffer, sizeof(buffer), 0);
+            cout << "Largo del buffer: " << sizeof(buffer) << endl;
+            memset(buffer, 0, sizeof(buffer)); //reseteamos la variable
+            cout << "Mensaje menor 20 caracteres enviado" << endl;
+        }
+        else if(sizeof(buffer) > 20){
+            send(server,buffer, sizeof(buffer), 0);
+            cout << "Largo del buffer: " << sizeof(buffer) << endl;
+            memset(buffer, 0, sizeof(buffer)); //reseteamos la variable
+            cout << "Mensaje mayor 20 caracteres enviado" << endl;
+        }
+
     }
 
     void Recibir(){
@@ -54,17 +84,18 @@ public:
 
         while(opcion != 3){
 
+            cout<< "|----------BIENVENIDO AL MENU DEL SERVIDOR----------|\n\n" <<endl;
+            cout<< "1) Realizar calculo\n" <<endl;
+            cout<< "2) Ver registro de actividades\n" <<endl;
+            cout<< "3) Cerrar sesion\n" <<endl;
             cout<< "SELECCIONE UNA OPCION:\n" <<endl;
-            cout<< "1- Realizar calculo\n" <<endl;
-            cout<< "2- Ver registro de actividades\n" <<endl;
-            cout<< "3- Cerrar sesion\n" <<endl;
             cin>>opcion;
             switch(opcion){
 
                 case 1:
                     system("cls");
                     cout <<"\nSe usara funcion enviarCalular al servidor" <<endl;
-                    //Cliente->Enviar();
+                    Enviar();
                     break;
 
                 case 2:
@@ -75,7 +106,8 @@ public:
                 case 3:
                     system("cls");
                     cout <<"\nSe usara funcion cerrarSesion al servidor" <<endl;
-                    //Cliente->CerrarSesion()
+                    system("pause");
+                    CerrarSesion();
                     break;
 
                 default:
@@ -94,12 +126,27 @@ public:
 int main()
 {
 
+    int port;
     Client *Cliente = new Client();
-    while(true){
+    /*while(true){
 
-        Cliente->Enviar();
-        Cliente->Recibir();
+        Cliente->_init();
+        Cliente->Menu();
+        //Cliente->Enviar();
+        //Cliente->Recibir();
 
-    }
+    }*/
+
+    do{
+        cout << "-------CONECTANDOSE AL SERVIDOR . . .-------" << endl;
+        cout << "IP: 192.168.1.33";
+        fflush(stdin);
+        cout<<"\nIngrese un puerto: ";
+        cin>>port;
+    }while(Cliente->_init(port)!=0);
+
+    Cliente->Menu();
+
+    return 0;
 
 }
