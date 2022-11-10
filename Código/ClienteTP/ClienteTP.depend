@@ -3,7 +3,31 @@
 	<iostream>
 	<winsock2.h>
 
-1666916310 source:e:\licenciatura en sistemas\3er aÑo\2do cuatrimestre\redes y comunicaciones 2022\tp redes daiana di stefano 2022\código\clientetp\main_cliente.cpp
+1667527886 source:e:\licenciatura en sistemas\3er aÑo\2do cuatrimestre\redes y comunicaciones 2022\tp redes daiana di stefano 2022\código\clientetp\main_cliente.cpp
 	<iostream>
 	<winsock2.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1667577552 source:c:\users\magostino\desktop\tp redes daiana di stefano 2022\código\clientetp\main_cliente.cpp
+	<iostream>
+	<winsock2.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1667699901 source:c:\users\magostino\desktop\clientetp\main_cliente.cpp
+	<iostream>
+	<winsock2.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1667867544 source:c:\users\day\desktop\clientetp\main_cliente.cpp
+	<iostream>
+	<winsock2.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
 
